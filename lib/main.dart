@@ -46,7 +46,9 @@ class _TaskState extends State<Task> {
   }
 
   void _deleteTask(int index) {
-    this._task.removeAt(index);
+    setState(() {
+      this._task.removeAt(index);
+    });
   }
   
 
@@ -76,9 +78,22 @@ class _TaskState extends State<Task> {
                     itemCount: this._task.length,
                     itemBuilder: (context, int index) {
                       return Card(
-                        child: ListTile(
-                          title: Text(_task[index]),
-                        ));
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(_task[index]),
+                            ),
+                            ButtonTheme.bar(
+                              child: ButtonBar(
+                                children: <Widget>[
+                                  FlatButton(
+                                    child: const Text('完了'),
+                                    onPressed: () => _deleteTask(index),
+                                  )
+                                ],),
+                            )
+                          ],)
+                        );
                     },
                   ))
             ),
