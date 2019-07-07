@@ -91,19 +91,19 @@ class _TaskState extends State<Task> {
               style: Theme.of(context).textTheme.display1,
             ),
             Flexible(
-              child: _getTaskLength() == 0
+              child: _getTaskLength() == 0 //タスクがあるかどうかを判定
                 ? Center(child: Text('タスクはありません'))
-                : Center(child: 
-                  ListView.builder(
+                : Center(child:
+                  ListView.builder( //タスクがある場合は配列の長さの分だけCardウィジットを生成
                     itemCount: this._task.length,
                     itemBuilder: (context, int index) {
-                      return Card(
+                      return Card( //タスク表示のDOM
                         child: Column(
                           children: <Widget>[
                             ListTile(
                               title: Text(_task[index]),
                             ),
-                            ButtonTheme.bar(
+                            ButtonTheme.bar( //タスクCardにボタンを付けるときはこのWidgetのchildrenに追加する
                               child: ButtonBar(
                                 children: <Widget>[
                                   FlatButton(
