@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,18 +28,27 @@ class Task extends StatefulWidget {
 }
 
 class _TaskState extends State<Task> {
-  List<String> _task = new List();
+  Map _task = new Map();
+
+    // ユーザが入力した日付を格納する変数
+  var _dueDateTime = new DateTime.now();
+
+  // 日付のフォーマッター
+  var formatter = new DateFormat('yyyy/MM/dd(E) HH:mm');
+
   TextEditingController taskCtrl = TextEditingController();
 
   /**
    * 入力されたタスクを画面に描画する
    * 
-   * @param String タスク内容 ex) ピーマンを買う
+   * @param String date タスクの期日
+   * @param String content タスクの内容
    */
-  void _setTask(String task) {
+  void _setTask(DateTime date, String content) {
     setState(() {
-      this._task.add(task);
+      this._task.put();
     });
+    print(this._task);
   }
 
   /**
@@ -67,9 +78,10 @@ class _TaskState extends State<Task> {
    */
   void _deleteTask(int index) {
     setState(() {
-      this._task.removeAt(index);
+      this._task.remove(index);
     });
   }
+  
   
 
   @override
@@ -90,6 +102,20 @@ class _TaskState extends State<Task> {
               decoration: InputDecoration(hintText: 'ピーマンを買う', labelText: '内容'),
               style: Theme.of(context).textTheme.display1,
             ),
+            FlatButton(
+              onPressed: () => 
+                DatePicker.showDateTimePicker(
+                  context,
+                  showTitleActions: true,
+                  onConfirm: (date){ //onConfirmを使うことで、Doneを押した時のイベントを設定できる
+                    setState(() {
+                      this._dueDateTime = date; //選択された日付をクラスプロパティに格納
+                    });
+                  }), 
+              child: Text(
+                formatter.format(this._dueDateTime),
+              )
+            ),
             Flexible(
               child: _getTaskLength() == 0 //タスクがあるかどうかを判定
                 ? Center(child: Text('タスクはありません'))
@@ -101,11 +127,14 @@ class _TaskState extends State<Task> {
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text(_task[index]),
+                              title: Text(_task['content'][index]),
                             ),
                             ButtonTheme.bar( //タスクCardにボタンを付けるときはこのWidgetのchildrenに追加する
                               child: ButtonBar(
                                 children: <Widget>[
+                                  Text(
+                                    _task['date'][index]
+                                  ),
                                   FlatButton(
                                     child: const Text('完了'),
                                     onPressed: () => _deleteTask(index),
@@ -121,7 +150,7 @@ class _TaskState extends State<Task> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _setTask(this.taskCtrl.text),
+        onPressed: () => _setTask(this._dueDateTime, this.taskCtrl.text), //TODO Class 'DateTime' has no instance method '[]'.←このエラーを解決する
         tooltip: 'Taskの追加',
         child: Icon(Icons.add),
       ),
