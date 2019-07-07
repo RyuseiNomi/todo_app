@@ -29,24 +29,46 @@ class _TaskState extends State<Task> {
   List<String> _task = new List();
   TextEditingController taskCtrl = TextEditingController();
 
+  /**
+   * 入力されたタスクを画面に描画する
+   * 
+   * @param String タスク内容 ex) ピーマンを買う
+   */
   void _setTask(String task) {
     setState(() {
       this._task.add(task);
     });
   }
 
+  /**
+   * 現在あるタスクを全て画面に描画する
+   * 
+   * @return array 全てのタスク
+   */
   List<String> _getAllTask() {
     setState(() {
       return this._task;
     });
   }
 
-  int _returnTaskLength() {
+  /**
+   * タスクの有無を判断するためにタスク配列の長さを返すメソッド
+   * 
+   * @return int タスク配列の長さ
+   */
+  int _getTaskLength() {
     return this._task.length;
   }
 
+  /**
+   * 引数で指定されたインデックスのタスクを配列から削除する
+   * 
+   * @param int 配列のインデックス
+   */
   void _deleteTask(int index) {
-    this._task.removeAt(index);
+    setState(() {
+      this._task.removeAt(index);
+    });
   }
   
 
@@ -69,16 +91,29 @@ class _TaskState extends State<Task> {
               style: Theme.of(context).textTheme.display1,
             ),
             Flexible(
-              child: _returnTaskLength() == 0
+              child: _getTaskLength() == 0
                 ? Center(child: Text('タスクはありません'))
                 : Center(child: 
                   ListView.builder(
                     itemCount: this._task.length,
                     itemBuilder: (context, int index) {
                       return Card(
-                        child: ListTile(
-                          title: Text(_task[index]),
-                        ));
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(_task[index]),
+                            ),
+                            ButtonTheme.bar(
+                              child: ButtonBar(
+                                children: <Widget>[
+                                  FlatButton(
+                                    child: const Text('完了'),
+                                    onPressed: () => _deleteTask(index),
+                                  )
+                                ],),
+                            )
+                          ],)
+                        );
                     },
                   ))
             ),
