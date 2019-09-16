@@ -11,6 +11,11 @@ class _BodyState extends State<Body> {
   Task taskModel = Task();
 
   @override
+  void initState() {
+    taskModel.init();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
