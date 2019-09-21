@@ -41,4 +41,16 @@ class DomainTask {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
+
+  Future<List<Task>> fetchAll() async {
+    final Database database = taskTable;
+    final List<Map<String, dynamic>> maps = await database.query('task');
+
+    return List.generate(maps.length, (i) {
+        return Task(
+          id: maps[i]['id'],
+          content: maps[i]['content'],
+        );
+    });
+  }
 }
