@@ -29,7 +29,7 @@ class _BodyState extends State<Body> {
           style: Theme.of(context).textTheme.display1,
         ),
         OutlineButton(
-          onPressed: () => setState(() { domainTask.insert(0, this.taskCtrl.text); }),
+          onPressed: () => setState(() { domainTask.insert(this.taskCtrl.text); }),
           child: Text("追加", style: TextStyle(color: Colors.blue),),
           borderSide: BorderSide(color: Colors.blue),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
