@@ -19,7 +19,7 @@ class DomainTask {
         /// DBがpathに存在しなかった場合のことを考慮している
         db.execute("""
           CREATE TABLE task (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             content TEXT,
             isComplete INTEGER
           )
@@ -28,10 +28,9 @@ class DomainTask {
     );
   }
 
-  Future<void> insert(int id, String content) async {
+  Future<void> insert(String content) async {
     final Database database = taskTable;
     final taskInstance = Task(
-      id: id,
       content: content
     );
 
